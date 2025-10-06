@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini CMS | JM Dev</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body class="bg-gray-50 text-gray-900 min-h-screen">
+    <main class="max-w-5xl mx-auto p-6">
+      <h1 class="text-3xl font-bold mb-6 text-center">🛠️ Mini CMS — JM Dev</h1>
+
+      <!-- 🔑 Panel de conexión -->
+      <div id="login" class="bg-white p-6 rounded-xl shadow mb-6">
+        <p class="mb-4 text-gray-700">Ingresa tu Supabase URL y anon key:</p>
+        <input
+          id="url"
+          type="text"
+          placeholder="https://tu-proyecto.supabase.co"
+          class="border p-2 w-full rounded mb-3"
+        />
+        <input
+          id="anonKey"
+          type="password"
+          placeholder="Supabase anon key"
+          class="border p-2 w-full rounded mb-3"
+        />
+        <button
+          onclick="initSupabase()"
+          class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+        >
+          Conectar
+        </button>
+      </div>
+
+      <!-- Perfil -->
+      <section
+        id="profileSection"
+        class="hidden bg-white p-6 rounded-xl shadow mb-8"
+      >
+        <h2 class="text-2xl font-semibold mb-4">Perfil</h2>
+        <form id="profileForm" class="grid gap-3">
+          <input
+            name="dev_name"
+            placeholder="Nombre corto (dev_name)"
+            class="border p-2 rounded"
+          />
+          <input
+            name="full_name"
+            placeholder="Nombre completo (full_name)"
+            class="border p-2 rounded"
+          />
+          <input
+            name="header_description"
+            placeholder="Descripción principal (header_description)"
+            class="border p-2 rounded"
+          />
+          <input
+            name="profile_photo_url"
+            placeholder="URL de la foto (profile_photo_url)"
+            class="border p-2 rounded"
+          />
+          <input
+            name="location"
+            placeholder="Ubicación (location)"
+            class="border p-2 rounded"
+          />
+          <textarea
+            name="about_me_description"
+            placeholder="Sobre mí (about_me_description)"
+            class="border p-2 rounded"
+          ></textarea>
+          <input
+            name="cvlink"
+            placeholder="Enlace CV (cvlink)"
+            class="border p-2 rounded"
+          />
+          <div class="flex gap-2">
+            <button
+              id="profileSaveButton"
+              type="button"
+              onclick="saveProfile()"
+              class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            >
+              💾 Guardar cambios
+            </button>
+            <button
+              type="button"
+              onclick="refreshProfile()"
+              class="bg-gray-200 px-4 py-2 rounded"
+            >
+              🔄 Recargar
+            </button>
+          </div>
+          <p id="profileStatus" class="text-sm text-gray-500"></p>
+        </form>
+      </section>
+
+      <!-- Stack -->
+      <section
+        id="stackSection"
+        class="hidden bg-white p-6 rounded-xl shadow mb-8"
+      >
+        <h2 class="text-2xl font-semibold mb-4">Stack</h2>
+        <ul id="stackList" class="space-y-2 mb-4"></ul>
+        <div class="flex gap-2">
+          <input
+            id="stackName"
+            placeholder="Nombre"
+            class="border p-2 rounded flex-1"
+          />
+          <input
+            id="stackIcon"
+            placeholder="URL del icono"
+            class="border p-2 rounded flex-1"
+          />
+          <button
+            onclick="addStack()"
+            class="bg-indigo-600 text-white px-4 rounded hover:bg-indigo-700"
+          >
+            ➕
+          </button>
+        </div>
+      </section>
+
+      <!-- Proyectos -->
+      <section
+        id="projectsSection"
+        class="hidden bg-white p-6 rounded-xl shadow mb-8"
+      >
+        <h2 class="text-2xl font-semibold mb-4">Proyectos</h2>
+        <ul id="projectsList" class="space-y-2 mb-4"></ul>
+        <button
+          onclick="addProjectPrompt()"
+          class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+        >
+          ➕ Agregar proyecto
+        </button>
+      </section>
+
+      <!-- Redes -->
+      <section id="socialSection" class="hidden bg-white p-6 rounded-xl shadow">
+        <h2 class="text-2xl font-semibold mb-4">Redes sociales</h2>
+        <ul id="socialList" class="space-y-2 mb-4"></ul>
+        <div class="flex gap-2">
+          <input
+            id="socialName"
+            placeholder="Nombre"
+            class="border p-2 rounded flex-1"
+          />
+          <input
+            id="socialIcon"
+            placeholder="Icono URL"
+            class="border p-2 rounded flex-1"
+          />
+          <input
+            id="socialLink"
+            placeholder="Enlace"
+            class="border p-2 rounded flex-1"
+          />
+          <button
+            onclick="addSocial()"
+            class="bg-indigo-600 text-white px-4 rounded hover:bg-indigo-700"
+          >
+            ➕
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      let supabase;
+      let profileId = null;
+
+      async function initSupabase() {
+        const url = document.getElementById("url").value.trim();
+        const anonKey = document.getElementById("anonKey").value.trim();
+        if (!url || !anonKey) return alert("Ingresá URL y anon key.");
+        supabase = window.supabase.createClient(url, anonKey);
+        document.getElementById("login").classList.add("hidden");
+        document
+          .querySelectorAll("section")
+          .forEach((s) => s.classList.remove("hidden"));
+        await loadData();
+      }
+
+      async function loadData() {
+        await loadProfile();
+        await loadStack();
+        await loadProjects();
+        await loadSocial();
+      }
+
+      // ===== PERFIL =====
+      async function loadProfile() {
+        if (!supabase) return;
+        const { data, error } = await supabase
+          .from("profile")
+          .select("*")
+          .maybeSingle();
+        if (error) return console.error("Error profile:", error);
+        if (!data) {
+          const { data: ins } = await supabase
+            .from("profile")
+            .insert({
+              dev_name: "JM Dev",
+              full_name: "",
+              header_description: "",
+              profile_photo_url: "",
+              location: "",
+              about_me_description: "",
+              cvLink: "",
+            })
+            .select()
+            .maybeSingle();
+          profileId = ins.id;
+          fillProfile(ins);
+        } else {
+          profileId = data.id;
+          fillProfile(data);
+        }
+      }
+
+      function fillProfile(data) {
+        for (const key in data) {
+          const el = document.querySelector(`[name="${key}"]`);
+          if (el) el.value = data[key] ?? "";
+        }
+        document.getElementById("profileStatus").textContent =
+          "Perfil cargado.";
+      }
+
+      async function saveProfile() {
+        if (!supabase || !profileId) return;
+        const btn = document.getElementById("profileSaveButton");
+        btn.disabled = true;
+        btn.textContent = "Guardando...";
+        const data = Object.fromEntries(
+          new FormData(document.getElementById("profileForm"))
+        );
+        const { error } = await supabase
+          .from("profile")
+          .update(data)
+          .eq("id", profileId);
+        if (error) {
+          console.error("Error al actualizar perfil:", error);
+          alert("Error al guardar perfil, revisá la consola.");
+        } else {
+          alert("✅ Perfil actualizado correctamente.");
+          await loadProfile();
+        }
+        btn.disabled = false;
+        btn.textContent = "💾 Guardar cambios";
+      }
+
+      async function refreshProfile() {
+        await loadProfile();
+      }
+
+      // ===== STACK =====
+      async function loadStack() {
+        if (!supabase) return;
+        const { data } = await supabase.from("stack").select("*").order("name");
+        const list = document.getElementById("stackList");
+        list.innerHTML = "";
+        data.forEach((item) => {
+          const li = document.createElement("li");
+          li.className =
+            "flex justify-between items-center bg-gray-100 p-2 rounded";
+          li.innerHTML = `<div class="flex items-center gap-3">
+              <img src="${item.icon_url || ""}" alt="${
+            item.name
+          }" class="w-6 h-6 rounded" />
+              <span>${item.name}</span>
+            </div>
+            <div class="flex gap-2">
+              <button class="text-sm text-indigo-600" onclick="editStack('${
+                item.id
+              }', '${escapeHtml(item.name)}', '${escapeHtml(
+            item.icon_url || ""
+          )}')">✏️</button>
+              <button class="text-red-500" onclick="deleteStack('${
+                item.id
+              }')">🗑️</button>
+            </div>`;
+          list.appendChild(li);
+        });
+      }
+
+      function escapeHtml(str = "") {
+        return String(str).replace(/"/g, "&quot;").replace(/'/g, "\\'");
+      }
+      async function addStack() {
+        const name = document.getElementById("stackName").value.trim();
+        const icon = document.getElementById("stackIcon").value.trim();
+        if (!name) return alert("Ingresá nombre.");
+        await supabase.from("stack").insert({ name, icon_url: icon });
+        document.getElementById("stackName").value = "";
+        document.getElementById("stackIcon").value = "";
+        loadStack();
+      }
+      async function editStack(id, name, icon) {
+        const newName = prompt("Nombre:", name) || name;
+        const newIcon = prompt("Icon URL:", icon) || icon;
+        await supabase
+          .from("stack")
+          .update({ name: newName, icon_url: newIcon })
+          .eq("id", id);
+        loadStack();
+      }
+      async function deleteStack(id) {
+        if (!confirm("Eliminar?")) return;
+        await supabase.from("stack").delete().eq("id", id);
+        loadStack();
+      }
+
+      // ===== PROYECTOS =====
+      async function loadProjects() {
+        if (!supabase) return;
+        const { data } = await supabase
+          .from("projects")
+          .select("*")
+          .order("created_at", { ascending: false });
+        const list = document.getElementById("projectsList");
+        list.innerHTML = "";
+        data.forEach((p) => {
+          const li = document.createElement("li");
+          li.className =
+            "bg-gray-100 p-2 rounded flex justify-between items-center";
+          li.innerHTML = `<div>
+            <div class="flex items-center gap-2"><img src="${
+              p.icon_url || ""
+            }" class="w-6 h-6" /><strong>${p.name}</strong></div>
+            <div class="text-sm text-gray-600">${p.description || ""}</div>
+            <a href="${
+              p.link || "#"
+            }" target="_blank" class="text-indigo-600 text-sm">${
+            p.link ? "Ver proyecto" : ""
+          }</a>
+          </div>
+          <div class="flex flex-col gap-2">
+            <button class="text-sm text-indigo-600" onclick="editProject('${
+              p.id
+            }')">✏️</button>
+            <button class="text-red-500" onclick="deleteProject('${
+              p.id
+            }')">🗑️</button>
+          </div>`;
+          list.appendChild(li);
+        });
+      }
+      async function addProjectPrompt() {
+        const name = prompt("Nombre del proyecto:");
+        if (!name) return;
+        const description = prompt("Descripción:") || "";
+        const link = prompt("Enlace:") || "";
+        const icon_url = prompt("Icon URL (opcional):") || "";
+        await supabase
+          .from("projects")
+          .insert({ name, description, link, icon_url });
+        loadProjects();
+      }
+      async function editProject(id) {
+        const { data } = await supabase
+          .from("projects")
+          .select("*")
+          .eq("id", id)
+          .maybeSingle();
+        if (!data) return alert("No encontrado");
+        const name = prompt("Nombre:", data.name) || data.name;
+        const description =
+          prompt("Descripción:", data.description || "") || data.description;
+        const link = prompt("Enlace:", data.link || "") || data.link;
+        const icon_url =
+          prompt("Icon URL:", data.icon_url || "") || data.icon_url;
+        await supabase
+          .from("projects")
+          .update({ name, description, link, icon_url })
+          .eq("id", id);
+        loadProjects();
+      }
+      async function deleteProject(id) {
+        if (!confirm("Eliminar proyecto?")) return;
+        await supabase.from("projects").delete().eq("id", id);
+        loadProjects();
+      }
+
+      // ===== REDES SOCIALES =====
+      async function loadSocial() {
+        if (!supabase) return;
+        const { data } = await supabase
+          .from("social_links")
+          .select("*")
+          .order("name");
+        const list = document.getElementById("socialList");
+        list.innerHTML = "";
+        data.forEach((s) => {
+          const li = document.createElement("li");
+          li.className =
+            "bg-gray-100 p-2 rounded flex justify-between items-center";
+          li.innerHTML = `
+            <div class="flex items-center gap-3">
+              <img src="${s.icon_url || ""}" class="w-5 h-5" />
+              <a href="${s.link || "#"}" target="_blank" class="text-sm">${
+            s.name
+          }</a>
+            </div>
+            <div class="flex gap-2">
+              <button class="text-sm text-indigo-600" onclick="editSocial('${
+                s.id
+              }')">✏️</button>
+              <button class="text-red-500" onclick="deleteSocial('${
+                s.id
+              }')">🗑️</button>
+            </div>
+          `;
+          list.appendChild(li);
+        });
+      }
+
+      async function addSocial() {
+        const name = document.getElementById("socialName").value.trim();
+        const icon = document.getElementById("socialIcon").value.trim();
+        const link = document.getElementById("socialLink").value.trim();
+        if (!name) return alert("Ingresá el nombre de la red.");
+        await supabase
+          .from("social_links")
+          .insert({ name, icon_url: icon, link });
+        document.getElementById("socialName").value = "";
+        document.getElementById("socialIcon").value = "";
+        document.getElementById("socialLink").value = "";
+        loadSocial();
+      }
+
+      async function editSocial(id) {
+        const { data } = await supabase
+          .from("social_links")
+          .select("*")
+          .eq("id", id)
+          .maybeSingle();
+        if (!data) return alert("No encontrado.");
+        const name = prompt("Nombre:", data.name) || data.name;
+        const icon = prompt("Icon URL:", data.icon_url || "") || data.icon_url;
+        const link = prompt("Enlace:", data.link || "") || data.link;
+        await supabase
+          .from("social_links")
+          .update({ name, icon_url: icon, link })
+          .eq("id", id);
+        loadSocial();
+      }
+
+      async function deleteSocial(id) {
+        if (!confirm("¿Eliminar este enlace?")) return;
+        await supabase.from("social_links").delete().eq("id", id);
+        loadSocial();
+      }
+    </script>
+  </body>
+</html>
