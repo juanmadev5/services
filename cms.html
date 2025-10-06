@@ -4,204 +4,496 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mini CMS | JM Dev</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <style>
+      :root {
+        /* Paleta de color verde Material 3 (Dark Mode) */
+        --md-sys-color-primary: #8bc34a; /* Un verde vibrante y accesible */
+        --md-sys-color-on-primary: #212121;
+        --md-sys-color-primary-container: #558b2f;
+        --md-sys-color-on-primary-container: #e8f5e9;
+
+        --md-sys-color-secondary: #aed581; /* Un verde más suave para detalles */
+        --md-sys-color-on-secondary: #212121;
+        --md-sys-color-secondary-container: #689f38;
+        --md-sys-color-on-secondary-container: #f1f8e9;
+
+        --md-sys-color-tertiary: #b39ddb; /* Un color de acento (violeta suave) */
+        --md-sys-color-on-tertiary: #212121;
+        --md-sys-color-tertiary-container: #7e57c2;
+        --md-sys-color-on-tertiary-container: #ede7f6;
+
+        --md-sys-color-background: #121212; /* Fondo muy oscuro */
+        --md-sys-color-on-background: #e0e0e0; /* Texto claro */
+
+        --md-sys-color-surface: #1e1e1e; /* Superficie de tarjetas, inputs */
+        --md-sys-color-on-surface: #e0e0e0;
+        --md-sys-color-surface-variant: #2d2d2d; /* Variante de superficie */
+        --md-sys-color-on-surface-variant: #bdbdbd;
+
+        --md-sys-color-error: #ef5350;
+        --md-sys-color-on-error: #ffffff;
+        --md-sys-color-error-container: #c62828;
+        --md-sys-color-on-error-container: #ffebee;
+
+        --md-sys-color-outline: #424242; /* Borde suave */
+        --md-sys-color-shadow: #000000;
+        --md-sys-color-inverse-surface: #e0e0e0;
+        --md-sys-color-inverse-on-surface: #212121;
+        --md-sys-color-inverse-primary: #5cb85c;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--md-sys-color-background);
+        color: var(--md-sys-color-on-background);
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      /* Base para tarjetas y secciones */
+      .card-material {
+        background-color: var(--md-sys-color-surface);
+        color: var(--md-sys-color-on-surface);
+        border-radius: 16px; /* Bordes más redondeados */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+        padding: 24px;
+        border: 1px solid var(--md-sys-color-outline);
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s,
+          box-shadow 0.3s;
+      }
+
+      /* Estilo de inputs */
+      .input-material {
+        background-color: var(--md-sys-color-surface-variant);
+        color: var(--md-sys-color-on-surface);
+        border: 1px solid var(--md-sys-color-outline);
+        padding: 12px 16px;
+        border-radius: 8px;
+        width: 100%;
+        transition: all 0.2s ease-in-out;
+      }
+      .input-material::placeholder {
+        color: var(--md-sys-color-on-surface-variant);
+      }
+      .input-material:focus {
+        outline: none;
+        border-color: var(--md-sys-color-primary);
+        box-shadow: 0 0 0 2px var(--md-sys-color-primary-container);
+        background-color: var(--md-sys-color-surface);
+      }
+
+      /* Estilos de botones primarios */
+      .btn-material-primary {
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        padding: 12px 24px;
+        border-radius: 20px; /* Botones más ovalados */
+        font-weight: 600;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+      }
+      .btn-material-primary:hover {
+        background-color: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+      }
+      .btn-material-primary:disabled {
+        background-color: var(--md-sys-color-outline);
+        color: var(--md-sys-color-on-surface-variant);
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      /* Estilos de botones secundarios (contorno) */
+      .btn-material-secondary-outline {
+        background-color: transparent;
+        color: var(--md-sys-color-secondary);
+        border: 1px solid var(--md-sys-color-secondary);
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-weight: 500;
+        transition: all 0.2s ease-in-out;
+      }
+      .btn-material-secondary-outline:hover {
+        background-color: rgba(
+          var(--md-sys-color-secondary-container-rgb),
+          0.1
+        ); /* Ligero overlay */
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Estilos de botones de icono */
+      .btn-material-icon {
+        background-color: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%; /* Botón circular */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+      }
+      .btn-material-icon:hover {
+        background-color: var(--md-sys-color-primary);
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+      }
+
+      /* Estilos para listas de items */
+      .list-item-material {
+        background-color: var(--md-sys-color-surface-variant);
+        color: var(--md-sys-color-on-surface);
+        border-radius: 12px;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid var(--md-sys-color-outline);
+        transition: all 0.2s ease-in-out;
+      }
+      .list-item-material:hover {
+        background-color: var(--md-sys-color-surface);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+        color: var(--md-sys-color-on-surface-variant); /* Color por defecto */
+      }
+
+      /* Clases de utilidad para iconos con color primario */
+      .icon-primary {
+        color: var(--md-sys-color-primary) !important;
+        font-variation-settings: "FILL" 1, "wght" 500; /* Un poco más relleno */
+      }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
-  <body class="bg-gray-50 text-gray-900 min-h-screen">
-    <main class="max-w-5xl mx-auto p-6">
-      <h1 class="text-3xl font-bold mb-6 text-center">🛠️ Mini CMS — JM Dev</h1>
-
-      <!-- 🔑 Panel de conexión -->
-      <div id="login" class="bg-white p-6 rounded-xl shadow mb-6">
-        <p class="mb-4 text-gray-700">Ingresa tu Supabase URL y anon key:</p>
-        <input
-          id="url"
-          type="text"
-          placeholder="https://tu-proyecto.supabase.co"
-          class="border p-2 w-full rounded mb-3"
-        />
-        <input
-          id="anonKey"
-          type="password"
-          placeholder="Supabase anon key"
-          class="border p-2 w-full rounded mb-3"
-        />
-        <button
-          onclick="initSupabase()"
-          class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+  <body>
+    <header class="bg-surface backdrop-blur sticky top-0 z-10 py-3 shadow-lg">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1
+          class="text-xl font-extrabold flex items-center gap-2"
+          style="color: var(--md-sys-color-primary)"
         >
+          <span class="material-symbols-outlined icon-primary">bolt</span> Mini
+          CMS
+          <span class="text-sm font-medium text-on-surface-variant hidden sm:inline"
+            >| JM Dev</span
+          >
+        </h1>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+      <h2
+        class="text-3xl font-bold mb-10 text-center"
+        style="color: var(--md-sys-color-on-background)"
+      >
+        Panel de Administración de Contenido
+      </h2>
+
+      <div id="login" class="card-material mb-10">
+        <p
+          class="mb-6 text-on-surface-variant font-medium border-l-4 pl-4"
+          style="border-color: var(--md-sys-color-primary-container)"
+        >
+          Conéctate a tu proyecto Supabase para comenzar.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <input
+            id="url"
+            type="text"
+            placeholder="URL del proyecto (e.g., https://tu-proyecto.supabase.co)"
+            class="input-material"
+          />
+          <input
+            id="anonKey"
+            type="password"
+            placeholder="Clave anon de Supabase"
+            class="input-material"
+          />
+        </div>
+        <button onclick="initSupabase()" class="btn-material-primary w-full md:w-auto">
+          <span class="material-symbols-outlined align-middle mr-2 text-on-primary" style="font-size: 1.2em;">link</span>
           Conectar
         </button>
       </div>
 
-      <!-- Perfil -->
-      <section
-        id="profileSection"
-        class="hidden bg-white p-6 rounded-xl shadow mb-8"
+      <div
+        id="cms-sections-container"
+        class="grid grid-cols-1 lg:grid-cols-3 gap-8 hidden"
       >
-        <h2 class="text-2xl font-semibold mb-4">Perfil</h2>
-        <form id="profileForm" class="grid gap-3">
-          <input
-            name="dev_name"
-            placeholder="Nombre corto (dev_name)"
-            class="border p-2 rounded"
-          />
-          <input
-            name="full_name"
-            placeholder="Nombre completo (full_name)"
-            class="border p-2 rounded"
-          />
-          <input
-            name="header_description"
-            placeholder="Descripción principal (header_description)"
-            class="border p-2 rounded"
-          />
-          <input
-            name="profile_photo_url"
-            placeholder="URL de la foto (profile_photo_url)"
-            class="border p-2 rounded"
-          />
-          <input
-            name="location"
-            placeholder="Ubicación (location)"
-            class="border p-2 rounded"
-          />
-          <textarea
-            name="about_me_description"
-            placeholder="Sobre mí (about_me_description)"
-            class="border p-2 rounded"
-          ></textarea>
-          <input
-            name="cvlink"
-            placeholder="Enlace CV (cvlink)"
-            class="border p-2 rounded"
-          />
-          <div class="flex gap-2">
-            <button
-              id="profileSaveButton"
-              type="button"
-              onclick="saveProfile()"
-              class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        <div class="lg:col-span-2 space-y-8">
+          <section id="profileSection" class="card-material">
+            <h2
+              class="text-2xl font-bold mb-5 flex items-center gap-2"
+              style="color: var(--md-sys-color-on-surface)"
             >
-              💾 Guardar cambios
-            </button>
-            <button
-              type="button"
-              onclick="refreshProfile()"
-              class="bg-gray-200 px-4 py-2 rounded"
+              <span class="material-symbols-outlined icon-primary">person</span>
+              Perfil
+            </h2>
+            <form id="profileForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                name="dev_name"
+                placeholder="Nombre corto (dev_name)"
+                class="input-material"
+              />
+              <input
+                name="full_name"
+                placeholder="Nombre completo (full_name)"
+                class="input-material"
+              />
+              <input
+                name="header_description"
+                placeholder="Descripción principal (header_description)"
+                class="input-material md:col-span-2"
+              />
+              <input
+                name="profile_photo_url"
+                placeholder="URL de la foto (profile_photo_url)"
+                class="input-material"
+              />
+              <input
+                name="location"
+                placeholder="Ubicación (location)"
+                class="input-material"
+              />
+              <textarea
+                name="about_me_description"
+                placeholder="Sobre mí (about_me_description)"
+                class="input-material md:col-span-2 h-32 resize-none"
+              ></textarea>
+              <input
+                name="cvlink"
+                placeholder="Enlace CV (cvlink)"
+                class="input-material"
+              />
+              <div class="md:col-span-2 flex flex-wrap gap-3 mt-2">
+                <button
+                  id="profileSaveButton"
+                  type="button"
+                  onclick="saveProfile()"
+                  class="btn-material-primary"
+                >
+                  <span class="material-symbols-outlined align-middle mr-2 text-on-primary" style="font-size: 1.2em;">save</span>
+                  Guardar cambios
+                </button>
+                <button
+                  type="button"
+                  onclick="refreshProfile()"
+                  class="btn-material-secondary-outline"
+                >
+                  <span class="material-symbols-outlined align-middle mr-2" style="color: var(--md-sys-color-secondary); font-size: 1.2em;">refresh</span>
+                  Recargar
+                </button>
+              </div>
+              <p
+                id="profileStatus"
+                class="text-sm italic mt-2 md:col-span-2"
+                style="color: var(--md-sys-color-on-surface-variant)"
+              ></p>
+            </form>
+          </section>
+        </div>
+
+        <div class="space-y-8">
+          <section id="stackSection" class="card-material">
+            <h2
+              class="text-2xl font-bold mb-5 flex items-center gap-2"
+              style="color: var(--md-sys-color-on-surface)"
             >
-              🔄 Recargar
+              <span class="material-symbols-outlined icon-primary">code</span>
+              Stack
+            </h2>
+            <ul
+              id="stackList"
+              class="space-y-3 mb-4 max-h-60 overflow-y-auto pr-2 custom-scrollbar"
+            ></ul>
+            <div class="flex flex-col gap-3 mt-4">
+              <input
+                id="stackName"
+                placeholder="Nombre de la tecnología"
+                class="input-material"
+              />
+              <div class="flex gap-2">
+                <input
+                  id="stackIcon"
+                  placeholder="URL del icono (opcional)"
+                  class="input-material flex-1"
+                />
+                <button onclick="addStack()" class="btn-material-icon">
+                  <span class="material-symbols-outlined text-on-primary-container">add</span>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="lg:col-span-3 space-y-8">
+          <section id="projectsSection" class="card-material">
+            <h2
+              class="text-2xl font-bold mb-5 flex items-center gap-2"
+              style="color: var(--md-sys-color-on-surface)"
+            >
+              <span class="material-symbols-outlined icon-primary"
+                >insights</span
+              >
+              Proyectos
+            </h2>
+            <ul id="projectsList" class="space-y-4 mb-5"></ul>
+            <button onclick="addProjectPrompt()" class="btn-material-primary">
+              <span class="material-symbols-outlined align-middle mr-2 text-on-primary" style="font-size: 1.2em;">add</span>
+              Agregar nuevo proyecto
             </button>
-          </div>
-          <p id="profileStatus" class="text-sm text-gray-500"></p>
-        </form>
-      </section>
-
-      <!-- Stack -->
-      <section
-        id="stackSection"
-        class="hidden bg-white p-6 rounded-xl shadow mb-8"
-      >
-        <h2 class="text-2xl font-semibold mb-4">Stack</h2>
-        <ul id="stackList" class="space-y-2 mb-4"></ul>
-        <div class="flex gap-2">
-          <input
-            id="stackName"
-            placeholder="Nombre"
-            class="border p-2 rounded flex-1"
-          />
-          <input
-            id="stackIcon"
-            placeholder="URL del icono"
-            class="border p-2 rounded flex-1"
-          />
-          <button
-            onclick="addStack()"
-            class="bg-indigo-600 text-white px-4 rounded hover:bg-indigo-700"
-          >
-            ➕
-          </button>
+          </section>
         </div>
-      </section>
 
-      <!-- Proyectos -->
-      <section
-        id="projectsSection"
-        class="hidden bg-white p-6 rounded-xl shadow mb-8"
-      >
-        <h2 class="text-2xl font-semibold mb-4">Proyectos</h2>
-        <ul id="projectsList" class="space-y-2 mb-4"></ul>
-        <button
-          onclick="addProjectPrompt()"
-          class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-        >
-          ➕ Agregar proyecto
-        </button>
-      </section>
-
-      <!-- Redes -->
-      <section id="socialSection" class="hidden bg-white p-6 rounded-xl shadow">
-        <h2 class="text-2xl font-semibold mb-4">Redes sociales</h2>
-        <ul id="socialList" class="space-y-2 mb-4"></ul>
-        <div class="flex gap-2">
-          <input
-            id="socialName"
-            placeholder="Nombre"
-            class="border p-2 rounded flex-1"
-          />
-          <input
-            id="socialIcon"
-            placeholder="Icono URL"
-            class="border p-2 rounded flex-1"
-          />
-          <input
-            id="socialLink"
-            placeholder="Enlace"
-            class="border p-2 rounded flex-1"
-          />
-          <button
-            onclick="addSocial()"
-            class="bg-indigo-600 text-white px-4 rounded hover:bg-indigo-700"
-          >
-            ➕
-          </button>
+        <div class="lg:col-span-3 space-y-8">
+          <section id="socialSection" class="card-material">
+            <h2
+              class="text-2xl font-bold mb-5 flex items-center gap-2"
+              style="color: var(--md-sys-color-on-surface)"
+            >
+              <span class="material-symbols-outlined icon-primary">share</span>
+              Redes sociales
+            </h2>
+            <ul id="socialList" class="space-y-3 mb-5"></ul>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <input
+                id="socialName"
+                placeholder="Red (e.g., LinkedIn)"
+                class="input-material"
+              />
+              <input
+                id="socialIcon"
+                placeholder="Icono URL (opcional)"
+                class="input-material"
+              />
+              <div class="flex gap-2 sm:col-span-1">
+                <input
+                  id="socialLink"
+                  placeholder="Enlace completo"
+                  class="input-material flex-1"
+                />
+                <button onclick="addSocial()" class="btn-material-icon">
+                  <span class="material-symbols-outlined text-on-primary-container">add</span>
+                </button>
+              </div>
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
     </main>
 
+    <footer
+      class="mt-10 py-4 text-center text-sm border-t"
+      style="
+        color: var(--md-sys-color-on-surface-variant);
+        border-color: var(--md-sys-color-outline);
+      "
+    >
+      © 2025 Mini CMS | Desarrollado por JM Dev
+    </footer>
+
     <script>
+      // Definición de colores Material 3 para uso en JavaScript
+      const M3_COLORS = {
+        primary: "var(--md-sys-color-primary)",
+        onPrimary: "var(--md-sys-color-on-primary)",
+        primaryContainer: "var(--md-sys-color-primary-container)",
+        onPrimaryContainer: "var(--md-sys-color-on-primary-container)",
+        secondary: "var(--md-sys-color-secondary)",
+        onSecondary: "var(--md-sys-color-on-secondary)",
+        secondaryContainer: "var(--md-sys-color-secondary-container)",
+        onSecondaryContainer: "var(--md-sys-color-on-secondary-container)",
+        surface: "var(--md-sys-color-surface)",
+        onSurface: "var(--md-sys-color-on-surface)",
+        surfaceVariant: "var(--md-sys-color-surface-variant)",
+        onSurfaceVariant: "var(--md-sys-color-on-surface-variant)",
+        outline: "var(--md-sys-color-outline)",
+        error: "var(--md-sys-color-error)",
+        onError: "var(--md-sys-color-on-error)",
+      };
+
+      // Clases CSS a añadir para los componentes generados en JS
+      const styles = {
+        // Botones de acción en listas
+        deleteBtn: `text-${M3_COLORS.error} hover:text-${M3_COLORS.onError} p-1 rounded-full transition duration-200`,
+        editBtn: `text-${M3_COLORS.secondary} hover:text-${M3_COLORS.onSecondary} p-1 rounded-full transition duration-200`,
+        // Contenedores de acciones
+        listItemActionContainer: "flex gap-1 items-center",
+        // Ítems de lista
+        listItem: "list-item-material",
+        stackIcon:
+          "w-8 h-8 rounded-full object-contain border p-0.5", // Border y padding para iconos de stack
+        projectIcon: "w-9 h-9 object-contain mr-2 rounded-full",
+        socialIcon: "w-6 h-6 rounded-full object-contain",
+      };
+
       let supabase;
       let profileId = null;
 
       async function initSupabase() {
         const url = document.getElementById("url").value.trim();
         const anonKey = document.getElementById("anonKey").value.trim();
-        if (!url || !anonKey) return alert("Ingresá URL y anon key.");
-        supabase = window.supabase.createClient(url, anonKey);
-        document.getElementById("login").classList.add("hidden");
-        document
-          .querySelectorAll("section")
-          .forEach((s) => s.classList.remove("hidden"));
-        await loadData();
+        if (!url || !anonKey) {
+          alert("🛑 Por favor, ingresá la URL y la anon key de Supabase.");
+          return;
+        }
+        try {
+          supabase = window.supabase.createClient(url, anonKey);
+          document.getElementById("login").classList.add("hidden");
+          document
+            .getElementById("cms-sections-container")
+            .classList.remove("hidden");
+          await loadData();
+        } catch (e) {
+          alert("❌ Error al conectar. Revisá la consola.");
+          console.error("Error al inicializar Supabase:", e);
+        }
       }
 
       async function loadData() {
-        await loadProfile();
-        await loadStack();
-        await loadProjects();
-        await loadSocial();
+        if (!supabase) return;
+        console.log("Cargando datos...");
+        await Promise.all([
+          loadProfile(),
+          loadStack(),
+          loadProjects(),
+          loadSocial(),
+        ]);
+        console.log("Datos cargados.");
       }
 
       // ===== PERFIL =====
       async function loadProfile() {
         if (!supabase) return;
+        const statusEl = document.getElementById("profileStatus");
+        statusEl.textContent = "Cargando perfil...";
+
         const { data, error } = await supabase
           .from("profile")
           .select("*")
           .maybeSingle();
-        if (error) return console.error("Error profile:", error);
+        if (error) {
+          statusEl.textContent = `Error al cargar perfil: ${error.message}`;
+          console.error("Error profile:", error);
+          return;
+        }
         if (!data) {
-          const { data: ins } = await supabase
+          const { data: ins, error: insError } = await supabase
             .from("profile")
             .insert({
               dev_name: "JM Dev",
@@ -214,6 +506,11 @@
             })
             .select()
             .maybeSingle();
+          if (insError) {
+            statusEl.textContent = `Error al inicializar perfil: ${insError.message}`;
+            console.error("Error initializing profile:", insError);
+            return;
+          }
           profileId = ins.id;
           fillProfile(ins);
         } else {
@@ -228,14 +525,22 @@
           if (el) el.value = data[key] ?? "";
         }
         document.getElementById("profileStatus").textContent =
-          "Perfil cargado.";
+          "✅ Perfil cargado correctamente.";
+        document.getElementById("profileStatus").style.color =
+          M3_COLORS.primary;
       }
 
       async function saveProfile() {
         if (!supabase || !profileId) return;
         const btn = document.getElementById("profileSaveButton");
+        const originalText = btn.innerHTML;
+        const statusEl = document.getElementById("profileStatus");
+
         btn.disabled = true;
-        btn.textContent = "Guardando...";
+        btn.innerHTML = `<span class="material-symbols-outlined align-middle mr-2 text-on-primary" style="font-size: 1.2em;">sync</span> Guardando...`;
+        statusEl.textContent = "Guardando cambios...";
+        statusEl.style.color = M3_COLORS.onSurfaceVariant;
+
         const data = Object.fromEntries(
           new FormData(document.getElementById("profileForm"))
         );
@@ -243,15 +548,20 @@
           .from("profile")
           .update(data)
           .eq("id", profileId);
+
         if (error) {
           console.error("Error al actualizar perfil:", error);
-          alert("Error al guardar perfil, revisá la consola.");
+          statusEl.textContent =
+            "❌ Error al guardar perfil. Revisá la consola.";
+          statusEl.style.color = M3_COLORS.error;
         } else {
-          alert("✅ Perfil actualizado correctamente.");
-          await loadProfile();
+          statusEl.textContent = "✅ Perfil actualizado correctamente.";
+          statusEl.style.color = M3_COLORS.primary;
+          await loadProfile(); // Recarga para asegurar la consistencia
         }
+
         btn.disabled = false;
-        btn.textContent = "💾 Guardar cambios";
+        btn.innerHTML = originalText;
       }
 
       async function refreshProfile() {
@@ -261,28 +571,45 @@
       // ===== STACK =====
       async function loadStack() {
         if (!supabase) return;
-        const { data } = await supabase.from("stack").select("*").order("name");
+        const { data, error } = await supabase
+          .from("stack")
+          .select("*")
+          .order("name");
+        if (error) return console.error("Error loading stack:", error);
+
         const list = document.getElementById("stackList");
         list.innerHTML = "";
+
+        if (data.length === 0) {
+          list.innerHTML = `<p class="italic p-3" style="color: ${M3_COLORS.onSurfaceVariant}">No hay tecnologías en tu stack. ¡Agregá una!</p>`;
+        }
+
         data.forEach((item) => {
           const li = document.createElement("li");
-          li.className =
-            "flex justify-between items-center bg-gray-100 p-2 rounded";
+          li.className = styles.listItem;
           li.innerHTML = `<div class="flex items-center gap-3">
-              <img src="${item.icon_url || ""}" alt="${
+              <img src="${
+                item.icon_url || "https://via.placeholder.com/32?text=?"
+              }" alt="${item.name}" class="${styles.stackIcon}" style="background-color: ${M3_COLORS.surfaceVariant}; border-color: ${M3_COLORS.outline};" />
+              <span class="font-medium" style="color: ${M3_COLORS.onSurface};">${
             item.name
-          }" class="w-6 h-6 rounded" />
-              <span>${item.name}</span>
+          }</span>
             </div>
-            <div class="flex gap-2">
-              <button class="text-sm text-indigo-600" onclick="editStack('${
-                item.id
-              }', '${escapeHtml(item.name)}', '${escapeHtml(
+            <div class="${styles.listItemActionContainer}">
+              <button class="${
+                styles.editBtn
+              }" title="Editar" onclick="editStack('${
+            item.id
+          }', '${escapeHtml(item.name)}', '${escapeHtml(
             item.icon_url || ""
-          )}')">✏️</button>
-              <button class="text-red-500" onclick="deleteStack('${
-                item.id
-              }')">🗑️</button>
+          )}')">
+              <span class="material-symbols-outlined" style="color: ${M3_COLORS.secondary}">edit</span>
+              </button>
+              <button class="${
+                styles.deleteBtn
+              }" title="Eliminar" onclick="deleteStack('${item.id}')">
+              <span class="material-symbols-outlined" style="color: ${M3_COLORS.error}">delete</span>
+              </button>
             </div>`;
           list.appendChild(li);
         });
@@ -292,60 +619,109 @@
         return String(str).replace(/"/g, "&quot;").replace(/'/g, "\\'");
       }
       async function addStack() {
-        const name = document.getElementById("stackName").value.trim();
-        const icon = document.getElementById("stackIcon").value.trim();
-        if (!name) return alert("Ingresá nombre.");
-        await supabase.from("stack").insert({ name, icon_url: icon });
-        document.getElementById("stackName").value = "";
-        document.getElementById("stackIcon").value = "";
+        const nameInput = document.getElementById("stackName");
+        const iconInput = document.getElementById("stackIcon");
+        const name = nameInput.value.trim();
+        const icon = iconInput.value.trim();
+
+        if (!name) return alert("❌ Ingresá el nombre de la tecnología.");
+
+        const { error } = await supabase
+          .from("stack")
+          .insert({ name, icon_url: icon });
+
+        if (error) {
+          alert("❌ Error al agregar stack: " + error.message);
+          return console.error("Error adding stack:", error);
+        }
+
+        nameInput.value = "";
+        iconInput.value = "";
         loadStack();
       }
       async function editStack(id, name, icon) {
-        const newName = prompt("Nombre:", name) || name;
-        const newIcon = prompt("Icon URL:", icon) || icon;
-        await supabase
+        const newName = prompt("Nuevo nombre:", name);
+        if (newName === null || newName.trim() === "") return;
+
+        const newIcon = prompt("Nueva URL del icono:", icon) || "";
+
+        const { error } = await supabase
           .from("stack")
-          .update({ name: newName, icon_url: newIcon })
+          .update({ name: newName.trim(), icon_url: newIcon.trim() })
           .eq("id", id);
+
+        if (error) {
+          alert("❌ Error al editar stack: " + error.message);
+          return console.error("Error editing stack:", error);
+        }
+
         loadStack();
       }
       async function deleteStack(id) {
-        if (!confirm("Eliminar?")) return;
-        await supabase.from("stack").delete().eq("id", id);
+        if (!confirm("⚠️ ¿Estás seguro de eliminar este item del Stack?"))
+          return;
+
+        const { error } = await supabase.from("stack").delete().eq("id", id);
+
+        if (error) {
+          alert("❌ Error al eliminar stack: " + error.message);
+          return console.error("Error deleting stack:", error);
+        }
+
         loadStack();
       }
 
       // ===== PROYECTOS =====
       async function loadProjects() {
         if (!supabase) return;
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from("projects")
           .select("*")
           .order("created_at", { ascending: false });
+        if (error) return console.error("Error loading projects:", error);
+
         const list = document.getElementById("projectsList");
         list.innerHTML = "";
+
+        if (data.length === 0) {
+          list.innerHTML = `<p class="italic p-3" style="color: ${M3_COLORS.onSurfaceVariant}">Aún no hay proyectos. ¡Sé el primero en agregarlos!</p>`;
+        }
+
         data.forEach((p) => {
           const li = document.createElement("li");
-          li.className =
-            "bg-gray-100 p-2 rounded flex justify-between items-center";
-          li.innerHTML = `<div>
-            <div class="flex items-center gap-2"><img src="${
-              p.icon_url || ""
-            }" class="w-6 h-6" /><strong>${p.name}</strong></div>
-            <div class="text-sm text-gray-600">${p.description || ""}</div>
-            <a href="${
-              p.link || "#"
-            }" target="_blank" class="text-indigo-600 text-sm">${
-            p.link ? "Ver proyecto" : ""
-          }</a>
+          li.className = styles.listItem;
+          li.innerHTML = `<div class="flex flex-col flex-1 min-w-0">
+            <div class="flex items-center gap-3 mb-1">
+                <img src="${
+                  p.icon_url || "https://via.placeholder.com/36?text=P"
+                }" class="${styles.projectIcon}" style="background-color: ${M3_COLORS.surfaceVariant}; border: 1px solid ${M3_COLORS.outline};" />
+                <strong class="text-lg font-semibold truncate" style="color: ${
+                  M3_COLORS.onSurface
+                };">${p.name}</strong>
+            </div>
+            <div class="text-sm mb-1 pl-12" style="color: ${
+              M3_COLORS.onSurfaceVariant
+            };">${p.description || "Sin descripción"}</div>
+            ${
+              p.link
+                ? `<a href="${p.link}" target="_blank" class="text-sm font-medium transition duration-150 pl-12" style="color: ${M3_COLORS.secondary};">
+                    <span class="material-symbols-outlined align-middle mr-1" style="font-size: 1.1em; color: ${M3_COLORS.secondary}">open_in_new</span>
+                    Ver proyecto
+                  </a>`
+                : ""
+            }
           </div>
-          <div class="flex flex-col gap-2">
-            <button class="text-sm text-indigo-600" onclick="editProject('${
-              p.id
-            }')">✏️</button>
-            <button class="text-red-500" onclick="deleteProject('${
-              p.id
-            }')">🗑️</button>
+          <div class="${styles.listItemActionContainer}">
+            <button class="${
+              styles.editBtn
+            }" title="Editar" onclick="editProject('${p.id}')">
+            <span class="material-symbols-outlined" style="color: ${M3_COLORS.secondary}">edit</span>
+            </button>
+            <button class="${
+              styles.deleteBtn
+            }" title="Eliminar" onclick="deleteProject('${p.id}')">
+            <span class="material-symbols-outlined" style="color: ${M3_COLORS.error}">delete</span>
+            </button>
           </div>`;
           list.appendChild(li);
         });
@@ -353,12 +729,19 @@
       async function addProjectPrompt() {
         const name = prompt("Nombre del proyecto:");
         if (!name) return;
-        const description = prompt("Descripción:") || "";
-        const link = prompt("Enlace:") || "";
+        const description = prompt("Descripción (opcional):") || "";
+        const link = prompt("Enlace al proyecto (opcional):") || "";
         const icon_url = prompt("Icon URL (opcional):") || "";
-        await supabase
+
+        const { error } = await supabase
           .from("projects")
           .insert({ name, description, link, icon_url });
+
+        if (error) {
+          alert("❌ Error al agregar proyecto: " + error.message);
+          return console.error("Error adding project:", error);
+        }
+
         loadProjects();
       }
       async function editProject(id) {
@@ -367,52 +750,80 @@
           .select("*")
           .eq("id", id)
           .maybeSingle();
-        if (!data) return alert("No encontrado");
+
+        if (!data) return alert("❌ Proyecto no encontrado");
+
         const name = prompt("Nombre:", data.name) || data.name;
         const description =
           prompt("Descripción:", data.description || "") || data.description;
         const link = prompt("Enlace:", data.link || "") || data.link;
         const icon_url =
           prompt("Icon URL:", data.icon_url || "") || data.icon_url;
-        await supabase
+
+        const { error } = await supabase
           .from("projects")
           .update({ name, description, link, icon_url })
           .eq("id", id);
+
+        if (error) {
+          alert("❌ Error al editar proyecto: " + error.message);
+          return console.error("Error editing project:", error);
+        }
+
         loadProjects();
       }
       async function deleteProject(id) {
-        if (!confirm("Eliminar proyecto?")) return;
-        await supabase.from("projects").delete().eq("id", id);
+        if (!confirm("⚠️ ¿Estás seguro de eliminar este proyecto?")) return;
+
+        const { error } = await supabase.from("projects").delete().eq("id", id);
+
+        if (error) {
+          alert("❌ Error al eliminar proyecto: " + error.message);
+          return console.error("Error deleting project:", error);
+        }
+
         loadProjects();
       }
 
       // ===== REDES SOCIALES =====
       async function loadSocial() {
         if (!supabase) return;
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from("social_links")
           .select("*")
           .order("name");
+        if (error) return console.error("Error loading social links:", error);
+
         const list = document.getElementById("socialList");
         list.innerHTML = "";
+
+        if (data.length === 0) {
+          list.innerHTML = `<p class="italic p-3" style="color: ${M3_COLORS.onSurfaceVariant}">No hay redes sociales configuradas. ¡Agregá tus enlaces!</p>`;
+        }
+
         data.forEach((s) => {
           const li = document.createElement("li");
-          li.className =
-            "bg-gray-100 p-2 rounded flex justify-between items-center";
+          li.className = styles.listItem;
           li.innerHTML = `
             <div class="flex items-center gap-3">
-              <img src="${s.icon_url || ""}" class="w-5 h-5" />
-              <a href="${s.link || "#"}" target="_blank" class="text-sm">${
-            s.name
-          }</a>
+              <img src="${
+                s.icon_url || "https://via.placeholder.com/24?text=S"
+              }" class="${styles.socialIcon}" style="background-color: ${M3_COLORS.surfaceVariant}; border: 1px solid ${M3_COLORS.outline};" />
+              <a href="${s.link || "#"}" target="_blank" class="text-base font-medium transition" style="color: ${M3_COLORS.onSurface}; hover:color: ${M3_COLORS.primary}">
+                ${s.name}
+              </a>
             </div>
-            <div class="flex gap-2">
-              <button class="text-sm text-indigo-600" onclick="editSocial('${
-                s.id
-              }')">✏️</button>
-              <button class="text-red-500" onclick="deleteSocial('${
-                s.id
-              }')">🗑️</button>
+            <div class="${styles.listItemActionContainer}">
+              <button class="${
+                styles.editBtn
+              }" title="Editar" onclick="editSocial('${s.id}')">
+              <span class="material-symbols-outlined" style="color: ${M3_COLORS.secondary}">edit</span>
+              </button>
+              <button class="${
+                styles.deleteBtn
+              }" title="Eliminar" onclick="deleteSocial('${s.id}')">
+              <span class="material-symbols-outlined" style="color: ${M3_COLORS.error}">delete</span>
+              </button>
             </div>
           `;
           list.appendChild(li);
@@ -420,16 +831,28 @@
       }
 
       async function addSocial() {
-        const name = document.getElementById("socialName").value.trim();
-        const icon = document.getElementById("socialIcon").value.trim();
-        const link = document.getElementById("socialLink").value.trim();
-        if (!name) return alert("Ingresá el nombre de la red.");
-        await supabase
+        const nameInput = document.getElementById("socialName");
+        const iconInput = document.getElementById("socialIcon");
+        const linkInput = document.getElementById("socialLink");
+
+        const name = nameInput.value.trim();
+        const icon = iconInput.value.trim();
+        const link = linkInput.value.trim();
+
+        if (!name) return alert("❌ Ingresá el nombre de la red.");
+
+        const { error } = await supabase
           .from("social_links")
           .insert({ name, icon_url: icon, link });
-        document.getElementById("socialName").value = "";
-        document.getElementById("socialIcon").value = "";
-        document.getElementById("socialLink").value = "";
+
+        if (error) {
+          alert("❌ Error al agregar red: " + error.message);
+          return console.error("Error adding social link:", error);
+        }
+
+        nameInput.value = "";
+        iconInput.value = "";
+        linkInput.value = "";
         loadSocial();
       }
 
@@ -439,22 +862,41 @@
           .select("*")
           .eq("id", id)
           .maybeSingle();
-        if (!data) return alert("No encontrado.");
+
+        if (!data) return alert("❌ Enlace no encontrado.");
+
         const name = prompt("Nombre:", data.name) || data.name;
         const icon = prompt("Icon URL:", data.icon_url || "") || data.icon_url;
         const link = prompt("Enlace:", data.link || "") || data.link;
-        await supabase
+
+        const { error } = await supabase
           .from("social_links")
           .update({ name, icon_url: icon, link })
           .eq("id", id);
+
+        if (error) {
+          alert("❌ Error al editar red: " + error.message);
+          return console.error("Error editing social link:", error);
+        }
+
         loadSocial();
       }
 
       async function deleteSocial(id) {
-        if (!confirm("¿Eliminar este enlace?")) return;
-        await supabase.from("social_links").delete().eq("id", id);
+        if (!confirm("⚠️ ¿Eliminar este enlace social?")) return;
+
+        const { error } = await supabase
+          .from("social_links")
+          .delete()
+          .eq("id", id);
+
+        if (error) {
+          alert("❌ Error al eliminar red: " + error.message);
+          return console.error("Error deleting social link:", error);
+        }
+
         loadSocial();
       }
     </script>
   </body>
-</html>
+                </html>
