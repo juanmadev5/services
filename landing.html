@@ -3,129 +3,206 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Desarrollo Web Moderno | Portafolios y Landing Pages</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <style>
+      :root {
+        /* Paleta de color verde Material 3 (Dark Mode) */
+        --md-sys-color-primary: #8bc34a; /* Verde vibrante para CTA */
+        --md-sys-color-on-primary: #212121;
+        --md-sys-color-primary-container: #558b2f;
+        --md-sys-color-on-primary-container: #e8f5e9;
+
+        --md-sys-color-secondary: #aed581; /* Verde más suave para detalles */
+        --md-sys-color-on-secondary: #212121;
+        
+        --md-sys-color-background: #121212; /* Fondo muy oscuro */
+        --md-sys-color-on-background: #e0e0e0; /* Texto principal claro */
+
+        --md-sys-color-surface: #1e1e1e; /* Superficie de tarjetas */
+        --md-sys-color-on-surface: #e0e0e0;
+        --md-sys-color-surface-variant: #2d2d2d; /* Variante de superficie */
+        --md-sys-color-on-surface-variant: #bdbdbd; /* Texto secundario */
+
+        --md-sys-color-outline: #424242; /* Borde suave */
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--md-sys-color-background);
+        color: var(--md-sys-color-on-background);
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      /* Estilo de la tarjeta/elemento de servicio/testimonio */
+      .card-material {
+        background-color: var(--md-sys-color-surface);
+        color: var(--md-sys-color-on-surface);
+        border-radius: 16px; /* Bordes redondeados Material 3 */
+        padding: 24px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4); /* Sombra notoria para destacar */
+        border: 1px solid var(--md-sys-color-outline);
+        transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+      }
+
+      .card-material:hover {
+        background-color: var(--md-sys-color-surface-variant);
+        transform: translateY(-4px); /* Efecto 3D sutil */
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Estilos de botón primario (CTA) */
+      .btn-material-primary {
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
+        padding: 14px 32px;
+        border-radius: 28px; /* Botón en forma de pastilla */
+        font-weight: 700;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+        transition: all 0.2s ease-in-out;
+      }
+      .btn-material-primary:hover {
+        background-color: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.6);
+      }
+      
+      /* Estilo para los títulos (h2) */
+      .section-title {
+        color: var(--md-sys-color-on-background);
+        font-weight: 800;
+        letter-spacing: -0.02em; /* Títulos más ajustados */
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 text-gray-900">
-    <!-- Hero Section -->
-    <header class="bg-gradient-to-br from-indigo-600 to-purple-600 text-white">
-      <div class="max-w-5xl mx-auto px-6 py-20 text-center">
-        <h1 class="text-4xl md:text-6xl font-bold mb-4">
+  <body>
+    <header
+      class="text-on-primary py-24 md:py-32"
+      style="background-color: var(--md-sys-color-primary-container)"
+    >
+      <div class="max-w-5xl mx-auto px-6 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
           Desarrollo web moderno y profesional
         </h1>
-        <p class="text-lg md:text-xl text-indigo-100 mb-8">
-          Portafolios, landing pages y sitios dinámicos actualizables sin
-          código.
+        <p class="text-lg md:text-xl mb-10" style="color: var(--md-sys-color-on-primary-container);">
+          Portafolios, landing pages y sitios dinámicos actualizables sin código, con enfoque en <strong>conversión</strong> y <strong>velocidad</strong>.
         </p>
-        <a
-          href="#contacto"
-          class="bg-white text-indigo-700 px-6 py-3 rounded-xl font-semibold shadow-lg hover:bg-indigo-100 transition"
-        >
-          Solicitar un sitio web
+        <a href="#contacto" class="btn-material-primary inline-flex items-center gap-2">
+           <span class="material-symbols-outlined fill-1" style="font-size: 1.5em;">rocket_launch</span>
+           Solicitar un sitio web
         </a>
       </div>
     </header>
 
-    <!-- Servicios -->
     <section id="servicios" class="max-w-6xl mx-auto px-6 py-20">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+      <h2 class="section-title text-3xl md:text-4xl text-center mb-16">
         Servicios que ofrezco
       </h2>
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4 text-center">
-        <div
-          class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition"
-        >
-          <div class="text-indigo-600 text-4xl mb-4">💼</div>
-          <h3 class="font-semibold text-xl mb-2">Portafolios profesionales</h3>
-          <p class="text-gray-600">
-            Muestra tu experiencia y proyectos con un diseño moderno y limpio.
+        <div class="card-material">
+          <span class="material-symbols-outlined fill-1 text-5xl mb-4" style="color: var(--md-sys-color-primary);">badge</span>
+          <h3 class="font-bold text-xl mb-2" style="color: var(--md-sys-color-on-surface);">Portafolios profesionales</h3>
+          <p style="color: var(--md-sys-color-on-surface-variant);">
+            Muestra tu experiencia y proyectos con un diseño moderno, limpio y enfocado en tu marca personal.
           </p>
         </div>
 
-        <div
-          class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition"
-        >
-          <div class="text-indigo-600 text-4xl mb-4">🚀</div>
-          <h3 class="font-semibold text-xl mb-2">Landing pages efectivas</h3>
-          <p class="text-gray-600">
-            Sitios optimizados para captar clientes y destacar tu producto o
-            servicio.
+        <div class="card-material">
+          <span class="material-symbols-outlined fill-1 text-5xl mb-4" style="color: var(--md-sys-color-primary);">campaign</span>
+          <h3 class="font-bold text-xl mb-2" style="color: var(--md-sys-color-on-surface);">Landing pages efectivas</h3>
+          <p style="color: var(--md-sys-color-on-surface-variant);">
+            Sitios optimizados para captar clientes, con un diseño que convierte visitantes en leads.
           </p>
         </div>
 
-        <div
-          class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition"
-        >
-          <div class="text-indigo-600 text-4xl mb-4">🏪</div>
-          <h3 class="font-semibold text-xl mb-2">
-            Negocios locales y emprendimientos
-          </h3>
-          <p class="text-gray-600">
-            Páginas informativas elegantes con tu identidad visual y fácil
-            navegación.
+        <div class="card-material">
+          <span class="material-symbols-outlined fill-1 text-5xl mb-4" style="color: var(--md-sys-color-primary);">storefront</span>
+          <h3 class="font-bold text-xl mb-2" style="color: var(--md-sys-color-on-surface);">Negocios locales y emprendimientos</h3>
+          <p style="color: var(--md-sys-color-on-surface-variant);">
+            Páginas informativas y elegantes que establecen tu presencia digital con fácil navegación.
           </p>
         </div>
 
-        <div
-          class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition"
-        >
-          <div class="text-indigo-600 text-4xl mb-4">⚙️</div>
-          <h3 class="font-semibold text-xl mb-2">
-            Sitios dinámicos con Supabase
-          </h3>
-          <p class="text-gray-600">
-            Actualiza tu contenido desde una base de datos sin tocar el código.
+        <div class="card-material">
+          <span class="material-symbols-outlined fill-1 text-5xl mb-4" style="color: var(--md-sys-color-primary);">database</span>
+          <h3 class="font-bold text-xl mb-2" style="color: var(--md-sys-color-on-surface);">Sitios dinámicos con Supabase</h3>
+          <p style="color: var(--md-sys-color-on-surface-variant);">
+            Actualiza tu contenido, proyectos o precios desde una base de datos sin depender de mí ni de código.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Testimonios -->
-    <section class="bg-gray-100 py-20">
+    <section class="py-16" style="background-color: var(--md-sys-color-surface-variant);">
       <div class="max-w-5xl mx-auto px-6 text-center">
-        <h2 class="text-3xl font-bold mb-10">Clientes satisfechos</h2>
+         <p class="text-xl font-medium" style="color: var(--md-sys-color-on-surface-variant);">
+            Todos los sitios son <strong>100% responsivos</strong>, rápidos y construidos con las últimas tecnologías web.
+         </p>
+      </div>
+    </section>
+
+    <section class="py-20">
+      <div class="max-w-5xl mx-auto px-6 text-center">
+        <h2 class="section-title text-3xl font-bold mb-10">Clientes que confían</h2>
         <div class="grid gap-8 md:grid-cols-3">
-          <div class="bg-white p-6 rounded-xl shadow-sm">
-            <p class="text-gray-600 italic">
+          <div class="card-material">
+            <span class="material-symbols-outlined text-4xl mb-3" style="color: var(--md-sys-color-secondary);">format_quote</span>
+            <p class="italic mb-4" style="color: var(--md-sys-color-on-surface-variant);">
               “Excelente trabajo. Mi portafolio luce profesional y recibo más
               contactos.”
             </p>
-            <p class="font-semibold mt-4">— Laura, Diseñadora UX</p>
+            <p class="font-semibold" style="color: var(--md-sys-color-on-surface);">— Laura, Diseñadora UX</p>
           </div>
-          <div class="bg-white p-6 rounded-xl shadow-sm">
-            <p class="text-gray-600 italic">
+          <div class="card-material">
+             <span class="material-symbols-outlined text-4xl mb-3" style="color: var(--md-sys-color-secondary);">format_quote</span>
+            <p class="italic mb-4" style="color: var(--md-sys-color-on-surface-variant);">
               “Mi landing convirtió más clientes en una semana que mi antiguo
-              sitio en meses.”
+              sitio en meses. ¡Impresionante!”
             </p>
-            <p class="font-semibold mt-4">— Javier, Coach Personal</p>
+            <p class="font-semibold" style="color: var(--md-sys-color-on-surface);">— Javier, Coach Personal</p>
           </div>
-          <div class="bg-white p-6 rounded-xl shadow-sm">
-            <p class="text-gray-600 italic">
+          <div class="card-material">
+             <span class="material-symbols-outlined text-4xl mb-3" style="color: var(--md-sys-color-secondary);">format_quote</span>
+            <p class="italic mb-4" style="color: var(--md-sys-color-on-surface-variant);">
               “Me encantó poder actualizar mi contenido desde Supabase sin
-              depender de nadie.”
+              depender de nadie. Gran solución.”
             </p>
-            <p class="font-semibold mt-4">— Sofía, Fotógrafa</p>
+            <p class="font-semibold" style="color: var(--md-sys-color-on-surface);">— Sofía, Fotógrafa</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Contacto -->
     <section id="contacto" class="max-w-3xl mx-auto px-6 py-20 text-center">
-      <h2 class="text-3xl font-bold mb-6">¿Listo para tu nuevo sitio web?</h2>
-      <p class="text-gray-600 mb-8">
-        Envíame un mensaje y conversemos sobre tu proyecto.
+      <h2 class="section-title text-3xl font-bold mb-6">¿Listo para impulsar tu presencia digital?</h2>
+      <p style="color: var(--md-sys-color-on-surface-variant);" class="text-lg mb-10">
+        Envíame un mensaje y conversemos sobre tu proyecto, objetivos y cómo podemos crear una web que trabaje para ti.
       </p>
       <a
         href="mailto:itzjuanmadev@proton.me"
-        class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
+        class="btn-material-primary inline-flex items-center gap-2"
       >
+        <span class="material-symbols-outlined fill-1" style="font-size: 1.5em;">mail</span>
         Contactar por correo
       </a>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+    <footer
+      class="py-8 text-center text-sm"
+      style="
+        background-color: var(--md-sys-color-surface-variant);
+        color: var(--md-sys-color-on-surface-variant);
+      "
+    >
       <p>© 2025 JM Dev — Desarrollador Web. Todos los derechos reservados.</p>
     </footer>
   </body>
